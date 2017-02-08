@@ -122,6 +122,10 @@ if [[ $KUBERNETES ]]; then
     if [[ $KUBERNETES_COLLECT_EVENTS ]]; then
         sed -i -e "s@# collect_events: false@ collect_events: true@" /etc/dd-agent/conf.d/kubernetes.yaml
     fi
+
+    if [[ $KUBERNETES_KUBELET_HOST ]]; then
+        sed -i -r -e "s@^ - port:(.*)@ - port:\1\n   host: $KUBERNETES_KUBELET_HOST@" /etc/dd-agent/conf.d/kubernetes.yaml
+    fi
 fi
 
 if [[ $MESOS_MASTER ]]; then
